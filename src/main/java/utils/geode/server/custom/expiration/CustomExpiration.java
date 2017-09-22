@@ -17,7 +17,7 @@ import org.apache.geode.pdx.internal.PdxInstanceImpl;
 public class CustomExpiration implements CustomExpiry, Declarable {
 
 	// Java runtime property
-	// -D${region-name}ExpirationFields=fieldName,fieldValue,timeToExpire;fieldName,fieldValue,timeToExpire;...;...;
+	// -D${region-name}ExpirationFields=fieldName,fieldValue,timeToExpire,expirationAction;fieldName,fieldValue,timeToExpire,expirationAction;...;...;
 
 	private List<Expiration> expirationList = new ArrayList<Expiration>();
 	private Log log = LogFactory.getLog(CustomExpiration.class);
@@ -34,7 +34,7 @@ public class CustomExpiration implements CustomExpiry, Declarable {
 				PdxInstanceImpl pdxInstance = (PdxInstanceImpl) entry.getValue();
 				return checkEntry(pdxInstance);
 			} else {
-				log.info("Region entry is not a PDX instance");
+				log.info("Entry is not a PDX instance in region " + entry.getRegion().getName());
 			}
 		}
 		return null;
@@ -52,38 +52,38 @@ public class CustomExpiration implements CustomExpiry, Declarable {
 	private ExpirationAttributes checkForExpiration(Expiration ex, PdxInstanceImpl pdx) {
 		if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.BOOLEAN) {
 			boolean b = Boolean.valueOf(ex.getValue());
-			if (((Boolean) pdx.getObject()).equals(b))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((Boolean) pdx.getField(ex.getField())).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.BYTE) {
 			byte b = Byte.valueOf(ex.getValue());
-			if (((Byte) pdx.getObject()).equals(b))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((Byte) pdx.getField(ex.getField())).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.CHAR) {
-			if (((Character) pdx.getObject()).toString().equals(ex.getValue()))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((Character) pdx.getField(ex.getField())).toString().equals(ex.getValue()))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.DOUBLE) {
 			Double b = Double.parseDouble(ex.getValue());
-			if (((Double) pdx.getObject()).equals(b))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((Double) pdx.getField(ex.getField())).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.FLOAT) {
 			Float b = Float.parseFloat(ex.getValue());
-			if (((Float) pdx.getObject()).equals(b))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((Float) pdx.getField(ex.getField())).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.INT) {
 			Integer b = Integer.valueOf(ex.getValue());
-			if (((Integer) pdx.getObject()).equals(b))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((Integer) pdx.getField(ex.getField())).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.LONG) {
 			Long b = Long.parseLong(ex.getValue());
-			if (((Long) pdx.getObject()).equals(b))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((Long) pdx.getField(ex.getField())).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.SHORT) {
 			Short b = Short.valueOf(ex.getValue());
-			if (((Short) pdx.getObject()).equals(b))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((Short) pdx.getField(ex.getField())).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.STRING) {
-			if (((String) pdx.getObject()).equals(ex.getValue()))
-				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+			if (((String) pdx.getField(ex.getField())).equals(ex.getValue()))
+				return new ExpirationAttributes(ex.getSeconds(), ex.getAction());
 		} else {
 			log.info("The PDX field " + pdx.getPdxField(ex.getField()).getFieldName()
 					+ " is not a supported type for custom expiration");
@@ -106,10 +106,22 @@ public class CustomExpiration implements CustomExpiry, Declarable {
 		}
 		for (String str : array) {
 			String[] expire = str.split(",");
-			if (expire != null && expire.length == 3) {
+			if (expire != null && expire.length == 4) {
 				try {
+					ExpirationAction action;
 					int seconds = Integer.parseInt(expire[2]);
-					expirationList.add(new Expiration(expire[0], expire[1], seconds));
+					if ("DESTROY".equalsIgnoreCase(expire[3])) {
+						action = ExpirationAction.DESTROY;
+					} else if ("INVALIDATE".equalsIgnoreCase(expire[3])) {
+						action = ExpirationAction.INVALIDATE;
+					} else if ("LOCAL_DESTROY".equalsIgnoreCase(expire[3])) {
+						action = ExpirationAction.LOCAL_DESTROY;
+					} else if ("LOCAL_INVALIDATE".equalsIgnoreCase(expire[3])) {
+						action = ExpirationAction.LOCAL_INVALIDATE;
+					} else {
+						action = ExpirationAction.DESTROY;
+					}
+					expirationList.add(new Expiration(expire[0], expire[1], seconds, action));
 				} catch (NumberFormatException e) {
 					log.info(regionName + "ExpirationFields Unable to parse number of seconds for field " + expire[0]);
 				}
