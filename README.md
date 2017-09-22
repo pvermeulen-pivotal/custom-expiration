@@ -60,7 +60,7 @@ Format of the ${region-name}ExpirationFields java property is as follows:
    A field block is denoted by a semi-colon and multiple blocks are supported. 
 
    Each field block contains four (4) parts separated by a comma.   
-      Part 1: The field name in the object that will be used to compare for expiration.  
-      Part 2: The value that will be used to compare the object's field value to. Currently only an equal condition is supported. The                                value is converted into the object field name's data type and compared.  
-      Part 3: The time-to-live or idle-time in seconds.  
-      Part 4: The action to be performed. Valid actions are DESTROY. INVALIDATE, LOCAL-DESTROY and LOCAL-INVALIDATE  
+      1. The field name in the object that will be used to compare for expiration.  
+      2. The value that will be used to compare the object's field value to. Currently only an equal condition is supported.    
+      3. The time-to-live or idle-time in seconds.  
+      4. The action to be performed. Valid actions are DESTROY. INVALIDATE, LOCAL-DESTROY and LOCAL-INVALIDATE  
