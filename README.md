@@ -48,7 +48,7 @@ The expiration-attributes XML tag above needs to be in the configuration for com
 **GFSH**  
 start server --bind-address=localhost --dir=c:\temp\gemfire\server1 --locators=localhost[10000] --cache-xml-file=c:\temp\gemfir
 e\cache.xml --name=server1 --use-cluster-configuration=false --J=-Dgemfire.log-file=server1.log --J=-Dgemfire.statistic-archive-fi
-le=server1.gfs --include-system-classpath=true --server-port=10100 
+le=server1.gfs --include-system-classpath=true --server-port=10100  
 --J-D${region-name}ExpirationFields=fieldName,fieldValue,timeToExpire,action;fieldName,fieldValue,timeToExpire,action;...;...;
 
 where *$(region-name}* is the region name where the custom expiration will be performed.
