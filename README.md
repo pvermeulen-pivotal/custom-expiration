@@ -17,15 +17,15 @@ To support region expiration the following XML statement must be added to each r
 **idle time (TTI)**
 
 <region name="region" refid="partition-persisted-redundant"\>  
- <region-attributes statistics-enabled="true"\>  
-  <entry-idle-time\>  
-   <expiration-attributes timeout="60" action="local-invalidate"\>  
-     <custom-expiry\>  
-       <class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>   
-    </custom-expiry\>  
-   </expiration-attributes\>  
-  </entry-idle-time\>  
- </region-attributes\>  
+  <region-attributes statistics-enabled="true"\>  
+    <entry-idle-time\>  
+      <expiration-attributes timeout="60" action="local-invalidate"\>  
+        <custom-expiry\>  
+          <class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>   
+        </custom-expiry\>  
+      </expiration-attributes\>  
+    </entry-idle-time\>  
+  </region-attributes\>  
 </region\>  
 
 **time-to-live (TTL)**
