@@ -43,9 +43,9 @@ To support region expiration the following XML statement must be added to each r
 </region\>  
 
 
-The expiration-attributes XML tag above needs to be in the configuration for compliance but is not used. The timeout value and action are specified by passing the a property for each region where custom expiration is needed in the server start command.
+The expiration-attributes XML tag above needs to be in the configuration for compliance but is not used. The timeout value and action are specified by passing the a property for each region where custom expiration is needed on the server start command.
 
-**GFSH**
+**GFSH**  
 start server --bind-address=localhost --dir=c:\temp\gemfire\server1 --locators=localhost[10000] --cache-xml-file=c:\temp\gemfir
 e\cache.xml --name=server1 --use-cluster-configuration=false --J=-Dgemfire.log-file=server1.log --J=-Dgemfire.statistic-archive-fi
 le=server1.gfs --include-system-classpath=true --server-port=10100 
