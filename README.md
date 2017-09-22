@@ -55,11 +55,11 @@ where *$(region-name}* is the region name where the custom expiration will be pe
 
 To support multiple regions add a different property for each region.
 
-Format of the ${region-name}ExpirationFields java property is as follows:
+**Format of the ${region-name}ExpirationFields java property is as follows:** 
 
-&nbsp;&nbsp;&nbsp;A field block is denoted by a semi-colon and multiple blocks are supported. 
+&nbsp;&nbsp;&nbsp;**_A field block is denoted by a semi-colon and multiple blocks are supported._** 
 
-&nbsp;&nbsp;&nbsp;Each field block contains four (4) parts separated by a comma.   
+&nbsp;&nbsp;&nbsp;**_Each field block contains four (4) parts separated by a comma._**   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. The field name in the object that will be used to compare for expiration.  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. The value that will be used to compare the object's field value to. Currently only an equal condition is supported.    
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. The time-to-live or idle-time in seconds.  
