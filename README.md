@@ -21,7 +21,7 @@ To support region expiration the following XML statement must be added to each r
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<entry-idle-time\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<expiration-attributes timeout="60" action="local-invalidate"\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<custom-expiry\>  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>   
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</custom-expiry\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</expiration-attributes\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</entry-idle-time\>  
@@ -35,7 +35,7 @@ To support region expiration the following XML statement must be added to each r
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<entry-time-to-live\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<expiration-attributes timeout="60" action="local-invalidate"\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<custom-expiry\>  
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</custom-expiry\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</expiration-attributes\>  
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</entry-time-to-live\>  
