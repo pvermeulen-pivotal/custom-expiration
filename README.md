@@ -12,33 +12,35 @@ The custom region expiration supports the following expiration types:
   - region-idle-time 
   - entry-idle-time
 
-To support region expiration the following XML statement must be added to the cluster configuration XML or cache XML:
+To support region expiration the following XML statement must be added to each region where custom exiration is needed in the cluster configuration XML or cache XML:
 
 **idle time (TTI)**
-<region name="region" refid="partition-persisted-redundant" >
-  <region-attributes statistics-enabled="true">
-    <entry-idle-time>
-      <expiration-attributes timeout="60" action="local-invalidate">
-        <custom-expiry>
-          <class-name>utils.geode.server.custom.expiration.CustomExpiration</class-name>
-        </custom-expiry>
-      </expiration-attributes>
-    </entry-idle-time>
-  </region-attributes>
-</region>
+
+\<region name="region" refid="partition-persisted-redundant" >\
+  \<region-attributes statistics-enabled="true">\
+    \<entry-idle-time>\
+      \<expiration-attributes timeout="60" action="local-invalidate">\
+        \<custom-expiry>\
+          \<class-name>utils.geode.server.custom.expiration.CustomExpiration</class-name>\
+        \</custom-expiry>\
+      \</expiration-attributes>\
+    \</entry-idle-time>\
+  \</region-attributes>\
+\</region>\
 
 **time-to-live (TTL)**
-<region name="region" refid="partition-persisted-redundant" >
-  <region-attributes statistics-enabled="true">
-    <entry-time-to-live>
-      <expiration-attributes timeout="60" action="local-invalidate">
-        <custom-expiry>
-          <class-name>utils.geode.server.custom.expiration.CustomExpiration</class-name>
-        </custom-expiry>
-      </expiration-attributes>
-    </entry-time-to-live>
-  </region-attributes>
-</region>
+
+\<region name="region" refid="partition-persisted-redundant" >\
+  \<region-attributes statistics-enabled="true">\
+    \<entry-time-to-live>\
+      \<expiration-attributes timeout="60" action="local-invalidate">\
+        \<custom-expiry>\
+          \<class-name>utils.geode.server.custom.expiration.CustomExpiration</class-name>\
+        \</custom-expiry>\
+      \</expiration-attributes>\
+    \</entry-time-to-live>\
+  \</region-attributes>\
+\</region>\
 
 
 The expiration-attributes XML tag above needs to be in the configuration for compliance but is not used. The timeout value and action are specified by passing the a property for each region where custom expiration is needed in the server start command.
