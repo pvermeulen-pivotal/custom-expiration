@@ -17,29 +17,29 @@ To support region expiration the following XML statement must be added to each r
 **idle time (TTI)**
 
 <region name="region" refid="partition-persisted-redundant"\>  
-  <region-attributes statistics-enabled="true"\>  
-    <entry-idle-time\>  
-      <expiration-attributes timeout="60" action="local-invalidate"\>  
-        <custom-expiry\>  
-          <class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>   
-        </custom-expiry\>  
-      </expiration-attributes\>  
-    </entry-idle-time\>  
-  </region-attributes\>  
+&nbsp;&nbsp;&nbsp;<region-attributes statistics-enabled="true"\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<entry-idle-time\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<expiration-attributes timeout="60" action="local-invalidate"\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<custom-expiry\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</custom-expiry\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</expiration-attributes\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</entry-idle-time\>  
+&nbsp;&nbsp;&nbsp;</region-attributes\>  
 </region\>  
 
 **time-to-live (TTL)**
 
 <region name="region" refid="partition-persisted-redundant" \>  
-  <region-attributes statistics-enabled="true"\>  
-    <entry-time-to-live\>  
-      <expiration-attributes timeout="60" action="local-invalidate"\>  
-        <custom-expiry\>  
-          <class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>  
-        </custom-expiry\>  
-      </expiration-attributes\>  
-    </entry-time-to-live\>  
-  </region-attributes\>  
+&nbsp;&nbsp;&nbsp;<region-attributes statistics-enabled="true"\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<entry-time-to-live\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<expiration-attributes timeout="60" action="local-invalidate"\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<custom-expiry\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<class-name\>utils.geode.server.custom.expiration.CustomExpiration</class-name\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</custom-expiry\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</expiration-attributes\>  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</entry-time-to-live\>  
+&nbsp;&nbsp;&nbsp;</region-attributes\>  
 </region\>  
 
 
@@ -57,10 +57,10 @@ To support multiple regions add a different property for each region.
 
 Format of the ${region-name}ExpirationFields java property is as follows:
 
-   A field block is denoted by a semi-colon and multiple blocks are supported. 
+&nbsp;&nbsp;&nbsp;A field block is denoted by a semi-colon and multiple blocks are supported. 
 
-   Each field block contains four (4) parts separated by a comma.   
-      1. The field name in the object that will be used to compare for expiration.  
-      2. The value that will be used to compare the object's field value to. Currently only an equal condition is supported.    
-      3. The time-to-live or idle-time in seconds.  
-      4. The action to be performed. Valid actions are DESTROY. INVALIDATE, LOCAL-DESTROY and LOCAL-INVALIDATE  
+&nbsp;&nbsp;&nbsp;Each field block contains four (4) parts separated by a comma.   
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;1. The field name in the object that will be used to compare for expiration.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;2. The value that will be used to compare the object's field value to. Currently only an equal condition is supported.    
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3. The time-to-live or idle-time in seconds.  
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;4. The action to be performed. Valid actions are DESTROY. INVALIDATE, LOCAL-DESTROY and LOCAL-INVALIDATE  
