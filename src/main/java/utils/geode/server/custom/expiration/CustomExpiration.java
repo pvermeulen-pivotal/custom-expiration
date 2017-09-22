@@ -1,0 +1,121 @@
+package utils.geode.server.custom.expiration;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.apache.geode.cache.CustomExpiry;
+import org.apache.geode.cache.Declarable;
+import org.apache.geode.cache.ExpirationAction;
+import org.apache.geode.cache.ExpirationAttributes;
+import org.apache.geode.cache.Region.Entry;
+import org.apache.geode.pdx.FieldType;
+import org.apache.geode.pdx.PdxInstance;
+import org.apache.geode.pdx.internal.PdxInstanceImpl;
+
+public class CustomExpiration implements CustomExpiry, Declarable {
+
+	// Java runtime property
+	// -D${region-name}ExpirationFields=fieldName,fieldValue,timeToExpire;fieldName,fieldValue,timeToExpire;...;...;
+
+	private List<Expiration> expirationList = new ArrayList<Expiration>();
+	private Log log = LogFactory.getLog(CustomExpiration.class);
+	private boolean customRegionExpirationInitialized = false;
+
+	public void close() {
+	}
+
+	public ExpirationAttributes getExpiry(Entry entry) {
+		if (!customRegionExpirationInitialized)
+			init(entry.getRegion().getName());
+		if (expirationList.size() > 0) {
+			if (entry.getValue() instanceof PdxInstance) {
+				PdxInstanceImpl pdxInstance = (PdxInstanceImpl) entry.getValue();
+				return checkEntry(pdxInstance);
+			} else {
+				log.info("Region entry is not a PDX instance");
+			}
+		}
+		return null;
+	}
+
+	private ExpirationAttributes checkEntry(PdxInstanceImpl pdx) {
+		for (Expiration ex : expirationList) {
+			ExpirationAttributes ea = checkForExpiration(ex, pdx);
+			if (ea != null)
+				return ea;
+		}
+		return null;
+	}
+
+	private ExpirationAttributes checkForExpiration(Expiration ex, PdxInstanceImpl pdx) {
+		if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.BOOLEAN) {
+			boolean b = Boolean.valueOf(ex.getValue());
+			if (((Boolean) pdx.getObject()).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.BYTE) {
+			byte b = Byte.valueOf(ex.getValue());
+			if (((Byte) pdx.getObject()).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.CHAR) {
+			if (((Character) pdx.getObject()).toString().equals(ex.getValue()))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.DOUBLE) {
+			Double b = Double.parseDouble(ex.getValue());
+			if (((Double) pdx.getObject()).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.FLOAT) {
+			Float b = Float.parseFloat(ex.getValue());
+			if (((Float) pdx.getObject()).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.INT) {
+			Integer b = Integer.valueOf(ex.getValue());
+			if (((Integer) pdx.getObject()).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.LONG) {
+			Long b = Long.parseLong(ex.getValue());
+			if (((Long) pdx.getObject()).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.SHORT) {
+			Short b = Short.valueOf(ex.getValue());
+			if (((Short) pdx.getObject()).equals(b))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else if (pdx.getPdxField(ex.getField()).getFieldType() == FieldType.STRING) {
+			if (((String) pdx.getObject()).equals(ex.getValue()))
+				return new ExpirationAttributes(ex.getSeconds(), ExpirationAction.DESTROY);
+		} else {
+			log.info("The PDX field " + pdx.getPdxField(ex.getField()).getFieldName()
+					+ " is not a supported type for custom expiration");
+		}
+		return null;
+	}
+
+	private void init(String regionName) {
+		log.info("Initializing custom expiration fields");
+		customRegionExpirationInitialized = true;
+		String fields = System.getProperty(regionName + "ExpirationFields");
+		if (fields == null) {
+			log.error("No " + regionName + "ExpirationFields property found. Unable to perform custom expiration.");
+			return;
+		}
+		String[] array = fields.split(";");
+		if (array == null) {
+			log.error("Unable to parse " + regionName + "ExpirationFields property");
+			return;
+		}
+		for (String str : array) {
+			String[] expire = str.split(",");
+			if (expire != null && expire.length == 3) {
+				try {
+					int seconds = Integer.parseInt(expire[2]);
+					expirationList.add(new Expiration(expire[0], expire[1], seconds));
+				} catch (NumberFormatException e) {
+					log.info(regionName + "ExpirationFields Unable to parse number of seconds for field " + expire[0]);
+				}
+			} else {
+				log.info(regionName + "ExpirationFields property Unable to parse expiration field " + str);
+			}
+		}
+	}
+}
