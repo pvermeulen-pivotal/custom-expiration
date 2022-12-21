@@ -1,4 +1,4 @@
-# Geode-Custom-Expiration
+# Custom Expiration
 
 A configuration based custom region and entry expiration that supports expiration of a region's objects (only PDX objects are supported)  based on the contents of a field and its value in the PDX object.
 
